@@ -25,14 +25,6 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       bloc: _movieDetailCubit..getMovieDetail(widget.movieId),
       builder: (context, state) {
         return Scaffold(
-            bottomNavigationBar: BottomAppBar(
-              child: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
             appBar: AppBar(
               title: switch (state) {
                 MovieDetailLoading _ => Text('Loading...'),
@@ -44,31 +36,43 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             body: switch (state) {
               MovieDetailLoading _ => CircularProgressIndicator(),
               MovieDetailError _ => Text('Error'),
-              MovieDetailLoaded movie => ListView(
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  children: [
-                    Hero(
-                      tag: widget.movieId,
-                      child: Image.network('https://image.tmdb.org/t/p/w500${movie.movieDetail.posterPath}'),
-                    ),
-                    Text(
-                      movie.movieDetail.title,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+              MovieDetailLoaded movie => SafeArea(
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    children: [
+                      Hero(
+                        tag: widget.movieId,
+                        child: Image.network('https://image.tmdb.org/t/p/w500${movie.movieDetail.posterPath}'),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      movie.movieDetail.overview,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Release Date: ${movie.movieDetail.releaseDate}',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
+                      Text(
+                        movie.movieDetail.title,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        movie.movieDetail.overview,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Release Date: ${movie.movieDetail.releaseDate}',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Rating: ${movie.movieDetail.popularity}',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Languafe: ${movie.movieDetail.originalLanguage}',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
               _ => Text('Movie Detail'),
             });
