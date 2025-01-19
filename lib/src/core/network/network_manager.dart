@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../constants/app_constants.dart';
@@ -55,7 +56,10 @@ class NetworkManager {
     try {
       final response = await _dio.get(
         url,
-        queryParameters: queryParameters,
+        queryParameters: {
+          'api_key': 'ae304e3f4d3830d95075ae6914b55ddf',
+          ...?queryParameters,
+        },
         options: Options(
           responseType: ResponseType.json,
           contentType: options?.contentType ?? 'image/png',
